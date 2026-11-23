@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CampusHelp - Submit a Request</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f2f4f7; margin: 0; padding: 20px; }
+  .box { max-width: 480px; margin: 30px auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+  h1 { font-size: 22px; margin-top: 0; }
+  label { display: block; margin-top: 14px; font-weight: bold; }
+  input, select, textarea { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; font-size: 15px; }
+  textarea { height: 90px; }
+  .error { color: #c62828; font-size: 13px; display: none; margin-top: 3px; }
+  button { margin-top: 20px; padding: 10px 18px; font-size: 15px; background: #1565c0; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+  .ok { text-align: center; display: none; }
+  .ok h2 { color: #2e7d32; }
+  .id { font-size: 24px; font-weight: bold; margin: 10px 0; }
+  .note { font-size: 12px; color: #666; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="box" id="formBox">
+  <h1>CampusHelp - Submit a Request</h1>
+
+  <label for="sid">Student ID</label>
+  <input type="text" id="sid" placeholder="Example: 12345678">
+  <div class="error" id="e1">Please enter your Student ID.</div>
+
+  <label for="cat">Request Category</label>
+  <select id="cat">
+    <option value="">-- Select category --</option>
+    <option>IT support</option>
+    <option>Classroom maintenance</option>
+    <option>Library assistance</option>
+    <option>Administrative services</option>
+  </select>
+  <div class="error" id="e2">Please select a category.</div>
+
+  <label for="desc">Description</label>
+  <textarea id="desc" placeholder="Describe your problem"></textarea>
+  <div class="error" id="e3">Please enter a description.</div>
+
+  <label for="pri">Priority</label>
+  <select id="pri">
+    <option value="">-- Select priority --</option>
+    <option>High</option>
+    <option>Medium</option>
+    <option>Low</option>
+  </select>
+  <div class="error" id="e4">Please select a priority.</div>
+
+  <button onclick="submitForm()">Submit</button>
+  <p class="note">Prototype only: nothing is saved and the request ID is simulated.</p>
+</div>
+
+<div class="box ok" id="okBox">
+  <h2>Your request was submitted successfully</h2>
+  <p>Your Request ID:</p>
+  <div class="id" id="reqId"></div>
+  <p>Use this ID to track your request.</p>
+  <button onclick="location.reload()">Submit another request</button>
+  <p class="note">Prototype only: this is a simulated confirmation.</p>
+</div>
+
+<script>
+function submitForm() {
+  var ids = ["sid", "cat", "desc", "pri"];
+  var valid = true;
+  for (var i = 0; i < ids.length; i++) {
+    var empty = document.getElementById(ids[i]).value.trim() === "";
+    document.getElementById("e" + (i + 1)).style.display = empty ? "block" : "none";
+    if (empty) valid = false;
+  }
+  if (valid) {
+    var num = Math.floor(Math.random() * 9000) + 1000;
+    document.getElementById("reqId").textContent = "CH-" + num;
+    document.getElementById("formBox").style.display = "none";
+    document.getElementById("okBox").style.display = "block";
+  }
+}
+</script>
+
+</body>
+</html>
