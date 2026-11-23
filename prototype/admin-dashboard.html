@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CampusHelp - Admin Dashboard Prototype</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f4f6f8;color:#222}
+header{background:#1f4e79;color:#fff;padding:14px 20px}
+main{max-width:900px;margin:20px auto;padding:0 12px}
+.note{background:#fff3cd;border:1px solid #e0c36a;padding:8px 12px;border-radius:6px;font-size:14px}
+.cards{display:flex;gap:12px;margin:16px 0}
+.card{flex:1;background:#fff;border-radius:8px;padding:14px;text-align:center;box-shadow:0 1px 3px #0002}
+.card b{display:block;font-size:30px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px}
+th,td{padding:8px 10px;border-bottom:1px solid #e3e3e3;text-align:left;font-size:14px}
+th{background:#e8eef4}
+</style>
+</head>
+<body>
+<header><h2 style="margin:0">CampusHelp - Administrator Dashboard</h2></header>
+<main>
+<p class="note"><b>Prototype only.</b> Simulated parts: the request list is fixed sample data, there is no login, and changes are kept in the page memory only (they are lost on reload).</p>
+<div class="cards">
+<div class="card"><b id="cOpen">0</b>Open</div>
+<div class="card"><b id="cOngoing">0</b>Ongoing</div>
+<div class="card"><b id="cDone">0</b>Completed</div>
+</div>
+<table>
+<thead><tr><th>ID</th><th>Category</th><th>Description</th><th>Priority</th><th>Assigned to</th><th>Status</th></tr></thead>
+<tbody id="rows"></tbody>
+</table>
+</main>
+<script>
+var staff=["Unassigned","IT Support","Maintenance","Library Desk","Registrar Office"];
+var states=["Open","Ongoing","Completed"];
+var reqs=[
+{id:"R-101",cat:"IT",desc:"Wi-Fi not working in Room 204",pri:"High",who:"Unassigned",st:"Open"},
+{id:"R-102",cat:"Maintenance",desc:"Projector broken in Lecture Hall 2",pri:"Medium",who:"Maintenance",st:"Ongoing"},
+{id:"R-103",cat:"Library",desc:"Book reservation not visible",pri:"Low",who:"Library Desk",st:"Completed"},
+{id:"R-104",cat:"Administrative",desc:"Request for enrolment certificate",pri:"Medium",who:"Unassigned",st:"Open"},
+{id:"R-105",cat:"IT",desc:"Cannot log in to student account",pri:"High",who:"IT Support",st:"Ongoing"}
+];
+function opts(list,cur){return list.map(function(x){return "<option"+(x===cur?" selected":"")+">"+x+"</option>";}).join("");}
+function draw(){
+var h="";
+reqs.forEach(function(r,i){
+h+="<tr><td>"+r.id+"</td><td>"+r.cat+"</td><td>"+r.desc+"</td><td>"+r.pri+"</td>"+
+"<td><select onchange='setWho("+i+",this.value)'>"+opts(staff,r.who)+"</select></td>"+
+"<td><select onchange='setSt("+i+",this.value)'>"+opts(states,r.st)+"</select></td></tr>";
+});
+document.getElementById("rows").innerHTML=h;
+document.getElementById("cOpen").textContent=reqs.filter(function(r){return r.st==="Open";}).length;
+document.getElementById("cOngoing").textContent=reqs.filter(function(r){return r.st==="Ongoing";}).length;
+document.getElementById("cDone").textContent=reqs.filter(function(r){return r.st==="Completed";}).length;
+}
+function setWho(i,v){reqs[i].who=v;if(v!=="Unassigned"&&reqs[i].st==="Open"){reqs[i].st="Ongoing";}draw();}
+function setSt(i,v){reqs[i].st=v;draw();}
+draw();
+</script>
+</body>
+</html>
